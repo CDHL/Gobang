@@ -67,7 +67,6 @@ HRESULT CreateGraphicsResources()
 				0,
 				&g_pStrokeStyle
 			);
-			if (FAILED(hr)) OutputDebugString(L"haha\n");
 
 			if (SUCCEEDED(hr))
 			{

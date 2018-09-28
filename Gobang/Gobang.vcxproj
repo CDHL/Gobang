@@ -123,7 +123,6 @@
     <ClCompile Include="GobangMain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="basewin.h" />
     <ClInclude Include="draw.h" />
     <ClInclude Include="game.h" />
   </ItemGroup>

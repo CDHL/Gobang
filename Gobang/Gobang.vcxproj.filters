@@ -32,8 +32,5 @@
     <ClInclude Include="draw.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="basewin.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

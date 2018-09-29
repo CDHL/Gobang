@@ -4,6 +4,9 @@
 #include <d2d1.h>
 #pragma comment(lib, "d2d1")
 
+float DPIScale::scaleX = 1.0f;
+float DPIScale::scaleY = 1.0f;
+
 ID2D1Factory			*g_pFactory;
 ID2D1HwndRenderTarget	*g_pRenderTarget;
 ID2D1SolidColorBrush	*g_pBrush;
@@ -13,6 +16,7 @@ const float BORDER_GAP = 0.1f;
 
 float g_boardLeft, g_boardTop, g_boardRight, g_boardBottom;
 float g_gridGap;
+int lastPointX, lastPointY;
 
 extern HWND hwnd;
 
@@ -33,6 +37,13 @@ void CalculateLayout()
 
 		g_gridGap = halfSideLength * 2 / (BOARD_SIZE - 1);
 	}
+}
+
+bool cmpDis(const D2D1_POINT_2F a, const D2D1_POINT_2F b, float r)
+{
+	float x = a.x - b.x;
+	float y = a.y - b.y;
+	return x * x + y * y < r * r;
 }
 
 HRESULT CreateGraphicsResources()
@@ -82,6 +93,16 @@ HRESULT CreateGraphicsResources()
 	return hr;
 }
 
+void DipsToRc(D2D1_POINT_2F curPoint, int &x, int &y)
+{
+	x = int((curPoint.x - g_boardLeft) / g_gridGap + 0.5f);
+	y = int((curPoint.y - g_boardTop) / g_gridGap + 0.5f);
+	if (!inmap(x, y))
+	{
+		x = y = -1;
+	}
+}
+
 void DiscardGraphicsResources()
 {
 	SafeRelease(g_pRenderTarget);
@@ -89,9 +110,26 @@ void DiscardGraphicsResources()
 	SafeRelease(g_pStrokeStyle);
 }
 
-D2D1_POINT_2F rcToDips(int x, int y)
+D2D1_POINT_2F RcToDips(int x, int y)
 {
-	return D2D1::Point2F(g_boardLeft + g_gridGap * y, g_boardTop + g_gridGap * x);
+	return D2D1::Point2F(g_boardLeft + g_gridGap * x, g_boardTop + g_gridGap * y);
+}
+
+void OnLButtonDown(int pixelX, int pixelY, DWORD flags)
+{
+	DipsToRc(DPIScale::PixelsToDips(pixelX, pixelY), lastPointX, lastPointY);
+}
+
+void OnLButtonUp(int pixelX, int pixelY, DWORD flags)
+{
+	D2D1_POINT_2F curPoint = DPIScale::PixelsToDips(pixelX, pixelY);
+	int x, y;
+	DipsToRc(curPoint, x, y);
+	if (inmap(x, y) && x == lastPointX && y == lastPointY)
+	{
+		int res = setPiece(x, y);
+		InvalidateRect(hwnd, NULL, FALSE);
+	}
 }
 
 void OnPaint()
@@ -160,7 +198,20 @@ void PaintPieces()
 		{
 			if (board[i][j] == black)
 			{
-				ellipse.point = rcToDips(i, j);
+				ellipse.point = RcToDips(i, j);
+				g_pRenderTarget->FillEllipse(ellipse, g_pBrush);
+			}
+		}
+	}
+
+	g_pBrush->SetColor(D2D1::ColorF(D2D1::ColorF::White));
+	for (int i = 0; i < BOARD_SIZE; ++i)
+	{
+		for (int j = 0; j < BOARD_SIZE; ++j)
+		{
+			if (board[i][j] == white)
+			{
+				ellipse.point = RcToDips(i, j);
 				g_pRenderTarget->FillEllipse(ellipse, g_pBrush);
 			}
 		}

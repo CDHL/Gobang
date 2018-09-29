@@ -1,34 +1,11 @@
 #include "draw.h"
 
 #include <Windows.h>
+#include <windowsx.h>
 
 HWND hwnd;
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-
-class DPIScale
-{
-	static float scaleX;
-	static float scaleY;
-
-public:
-	static void Initialize(ID2D1Factory *pFactory)
-	{
-		FLOAT dpiX, dpiY;
-		pFactory->GetDesktopDpi(&dpiX, &dpiY);
-		scaleX = dpiX / 96.0f;
-		scaleY = dpiY / 96.0f;
-	}
-
-	template <typename T>
-	static D2D1_POINT_2F PixelsToDips(T x, T y)
-	{
-		return D2D1::Point2F(static_cast<float>(x) / scaleX, static_cast<float>(y) / scaleY);
-	}
-};
-
-float DPIScale::scaleX = 1.0f;
-float DPIScale::scaleY = 1.0f;
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLime, int nCmdShow)
 {
@@ -111,6 +88,18 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_SIZE:
 		Resize();
 		return 0;
+
+	case WM_LBUTTONDOWN:
+		OnLButtonDown(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), (DWORD)wParam);
+		return 0;
+
+	case WM_LBUTTONUP:
+		OnLButtonUp(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), (DWORD)wParam);
+		return 0;
+
+	//case WM_MOUSEMOVE:
+	//	OnMouseMove(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), (DWORD)wParam);
+	//	return 0;
 	}
 
 	return DefWindowProc(hwnd, uMsg, wParam, lParam);

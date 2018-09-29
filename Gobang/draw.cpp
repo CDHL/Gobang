@@ -16,7 +16,7 @@ const float BORDER_GAP = 0.1f;
 
 float g_boardLeft, g_boardTop, g_boardRight, g_boardBottom;
 float g_gridGap;
-int lastPointX, lastPointY;
+int g_lastPointX, g_lastPointY;
 
 extern HWND hwnd;
 
@@ -97,7 +97,7 @@ void DipsToRc(D2D1_POINT_2F curPoint, int &x, int &y)
 {
 	x = int((curPoint.x - g_boardLeft) / g_gridGap + 0.5f);
 	y = int((curPoint.y - g_boardTop) / g_gridGap + 0.5f);
-	if (!inmap(x, y))
+	if (!inBoard(x, y))
 	{
 		x = y = -1;
 	}
@@ -117,7 +117,12 @@ D2D1_POINT_2F RcToDips(int x, int y)
 
 void OnLButtonDown(int pixelX, int pixelY, DWORD flags)
 {
-	DipsToRc(DPIScale::PixelsToDips(pixelX, pixelY), lastPointX, lastPointY);
+	D2D1_POINT_2F lastPoint = DPIScale::PixelsToDips(pixelX, pixelY);
+	DipsToRc(lastPoint, g_lastPointX, g_lastPointY);
+	if (!cmpDis(RcToDips(g_lastPointX, g_lastPointY), lastPoint, g_gridGap * 0.4f))
+	{
+		g_lastPointX = g_lastPointY = -1;
+	}
 }
 
 void OnLButtonUp(int pixelX, int pixelY, DWORD flags)
@@ -125,7 +130,7 @@ void OnLButtonUp(int pixelX, int pixelY, DWORD flags)
 	D2D1_POINT_2F curPoint = DPIScale::PixelsToDips(pixelX, pixelY);
 	int x, y;
 	DipsToRc(curPoint, x, y);
-	if (inmap(x, y) && x == lastPointX && y == lastPointY)
+	if (inBoard(x, y) && cmpDis(RcToDips(g_lastPointX, g_lastPointY), curPoint, g_gridGap * 0.4f))
 	{
 		int res = setPiece(x, y);
 		InvalidateRect(hwnd, NULL, FALSE);

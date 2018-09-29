@@ -11,7 +11,7 @@ enum Piece
 
 extern Piece board[BOARD_SIZE][BOARD_SIZE];
 
-bool inmap(int x, int y);
+bool inBoard(int x, int y);
 
 int setPiece(int x, int y);
 

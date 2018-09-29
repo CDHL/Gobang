@@ -91,7 +91,7 @@ void DiscardGraphicsResources()
 
 D2D1_POINT_2F rcToDips(int x, int y)
 {
-	return D2D1::Point2F(g_boardLeft + g_gridGap * x, g_boardTop + g_gridGap * y);
+	return D2D1::Point2F(g_boardLeft + g_gridGap * y, g_boardTop + g_gridGap * x);
 }
 
 void OnPaint()
@@ -150,7 +150,21 @@ void PaintBoard()
 
 void PaintPieces()
 {
-	
+	D2D1_ELLIPSE ellipse;
+	ellipse.radiusX = ellipse.radiusY = g_gridGap * 0.4f;
+
+	g_pBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Black));
+	for (int i = 0; i < BOARD_SIZE; ++i)
+	{
+		for (int j = 0; j < BOARD_SIZE; ++j)
+		{
+			if (board[i][j] == black)
+			{
+				ellipse.point = rcToDips(i, j);
+				g_pRenderTarget->FillEllipse(ellipse, g_pBrush);
+			}
+		}
+	}
 }
 
 void Resize()

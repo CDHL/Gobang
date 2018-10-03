@@ -1,2 +1,2 @@
 # Gobang
-sky3141's first Windows program.
+CDHL's first Windows program.

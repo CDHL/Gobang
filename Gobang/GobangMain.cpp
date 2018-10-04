@@ -25,7 +25,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLime
 	hwnd = CreateWindowEx(
 		0,						// Optional window styles
 		CLASS_NAME,				// Window class
-		L"Test Title",			// Window text
+		L"Gobang",			// Window text
 		WS_OVERLAPPEDWINDOW,	// Window style
 
 		// Size and position

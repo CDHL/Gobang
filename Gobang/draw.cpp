@@ -13,6 +13,8 @@ ID2D1SolidColorBrush	*g_pBrush;
 ID2D1StrokeStyle		*g_pStrokeStyle;
 
 const float BORDER_GAP = 0.1f;
+const float CLICK_RANGE = 0.5f;
+const float PIECE_SIZE = 0.4f;
 
 float g_boardLeft, g_boardTop, g_boardRight, g_boardBottom;
 float g_gridGap;
@@ -119,7 +121,7 @@ void OnLButtonDown(int pixelX, int pixelY, DWORD flags)
 {
 	D2D1_POINT_2F lastPoint = DPIScale::PixelsToDips(pixelX, pixelY);
 	DipsToRc(lastPoint, g_lastPointX, g_lastPointY);
-	if (!cmpDis(RcToDips(g_lastPointX, g_lastPointY), lastPoint, g_gridGap * 0.4f))
+	if (!cmpDis(RcToDips(g_lastPointX, g_lastPointY), lastPoint, g_gridGap * CLICK_RANGE))
 	{
 		g_lastPointX = g_lastPointY = -1;
 	}
@@ -130,9 +132,13 @@ void OnLButtonUp(int pixelX, int pixelY, DWORD flags)
 	D2D1_POINT_2F curPoint = DPIScale::PixelsToDips(pixelX, pixelY);
 	int x, y;
 	DipsToRc(curPoint, x, y);
-	if (inBoard(x, y) && cmpDis(RcToDips(g_lastPointX, g_lastPointY), curPoint, g_gridGap * 0.4f))
+	if (inBoard(x, y) && cmpDis(RcToDips(g_lastPointX, g_lastPointY), curPoint, g_gridGap * CLICK_RANGE))
 	{
 		int res = setPiece(x, y);
+
+		if (res == white) OutputDebugString(L"White wins!\n");
+		else if (res == black) OutputDebugString(L"Black wins!\n");
+
 		InvalidateRect(hwnd, NULL, FALSE);
 	}
 }
@@ -194,7 +200,7 @@ void PaintBoard()
 void PaintPieces()
 {
 	D2D1_ELLIPSE ellipse;
-	ellipse.radiusX = ellipse.radiusY = g_gridGap * 0.4f;
+	ellipse.radiusX = ellipse.radiusY = g_gridGap * PIECE_SIZE;
 
 	g_pBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Black));
 	for (int i = 0; i < BOARD_SIZE; ++i)

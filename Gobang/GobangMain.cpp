@@ -98,9 +98,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		OnLButtonUp(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), (DWORD)wParam);
 		return 0;
 
-	case WM_SETCURSOR:
-		OutputDebugString(L"Set Cursor\n");
-		break;
+	//case WM_SETCURSOR:
+	//	OutputDebugString(L"Set Cursor\n");
+	//	break;
 
 	//case WM_MOUSEMOVE:
 	//	OnMouseMove(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), (DWORD)wParam);

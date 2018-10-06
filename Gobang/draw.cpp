@@ -56,11 +56,15 @@ HRESULT CreateGraphicsResources()
 		RECT rc;
 		GetClientRect(hwnd, &rc);
 
-		D2D_SIZE_U size = D2D1::SizeU(rc.right, rc.bottom);
-
 		hr = g_pFactory->CreateHwndRenderTarget(
 			D2D1::RenderTargetProperties(),
-			D2D1::HwndRenderTargetProperties(hwnd, size),
+			D2D1::HwndRenderTargetProperties(
+				hwnd,
+				D2D1::SizeU(
+					rc.right - rc.left,
+					rc.bottom - rc.top
+				)
+			),
 			&g_pRenderTarget
 		);
 		

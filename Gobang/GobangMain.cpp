@@ -22,7 +22,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLime
 	RegisterClass(&wc);
 
 	// Create the window.
-
+	
 	hwnd = CreateWindowEx(
 		0,						// Optional window styles
 		CLASS_NAME,				// Window class

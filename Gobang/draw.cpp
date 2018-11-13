@@ -37,7 +37,7 @@ void CalculateLayout()
 		g_boardRight = x + halfSideLength;
 		g_boardBottom = y + halfSideLength;
 
-		g_gridGap = halfSideLength * 2 / (BOARD_SIZE - 1);
+		g_gridGap = halfSideLength * 2 / (Board::BOARD_SIZE - 1);
 	}
 }
 
@@ -103,7 +103,7 @@ void DipsToRc(D2D1_POINT_2F curPoint, int &x, int &y)
 {
 	x = int((curPoint.x - g_boardLeft) / g_gridGap + 0.5f);
 	y = int((curPoint.y - g_boardTop) / g_gridGap + 0.5f);
-	if (!inBoard(x, y))
+	if (!g_mainBoard.inBoard(x, y))
 	{
 		x = y = -1;
 	}
@@ -136,14 +136,22 @@ void OnLButtonUp(int pixelX, int pixelY, DWORD flags)
 	D2D1_POINT_2F curPoint = DPIScale::PixelsToDips(pixelX, pixelY);
 	int x, y;
 	DipsToRc(curPoint, x, y);
-	if (inBoard(x, y) && cmpDis(RcToDips(g_lastPointX, g_lastPointY), curPoint, g_gridGap * CLICK_RANGE))
+	if (g_mainBoard.inBoard(x, y) && cmpDis(RcToDips(g_lastPointX, g_lastPointY), curPoint, g_gridGap * CLICK_RANGE))
 	{
-		int res = setPiece(x, y);
-
-		if (res == white) OutputDebugString(L"White wins!\n");
-		else if (res == black) OutputDebugString(L"Black wins!\n");
+		int res = g_mainBoard.setPiece(x, y);
 
 		InvalidateRect(hwnd, NULL, FALSE);
+
+		if (res == Board::white)
+		{
+			//OutputDebugString(L"White wins!\n");
+			MessageBox(hwnd, L"White wins!", L"Game over", MB_OK);
+		}
+		else if (res == Board::black)
+		{
+			//OutputDebugString(L"Black wins!\n");
+			MessageBox(hwnd, L"Black wins!", L"Game over", MB_OK);
+		}
 	}
 }
 
@@ -175,7 +183,7 @@ void PaintBoard()
 {
 	g_pBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Black));
 	D2D1_POINT_2F start, end;
-	for (int i = 0; i < BOARD_SIZE; ++i)
+	for (int i = 0; i < Board::BOARD_SIZE; ++i)
 	{
 		start.x = g_boardLeft;
 		start.y = g_boardTop + i * g_gridGap;
@@ -207,11 +215,11 @@ void PaintPieces()
 	ellipse.radiusX = ellipse.radiusY = g_gridGap * PIECE_SIZE;
 
 	g_pBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Black));
-	for (int i = 0; i < BOARD_SIZE; ++i)
+	for (int i = 0; i < Board::BOARD_SIZE; ++i)
 	{
-		for (int j = 0; j < BOARD_SIZE; ++j)
+		for (int j = 0; j < Board::BOARD_SIZE; ++j)
 		{
-			if (board[i][j] == black)
+			if (g_mainBoard.getPiece(i, j) == Board::black)
 			{
 				ellipse.point = RcToDips(i, j);
 				g_pRenderTarget->FillEllipse(ellipse, g_pBrush);
@@ -220,11 +228,11 @@ void PaintPieces()
 	}
 
 	g_pBrush->SetColor(D2D1::ColorF(D2D1::ColorF::White));
-	for (int i = 0; i < BOARD_SIZE; ++i)
+	for (int i = 0; i < Board::BOARD_SIZE; ++i)
 	{
-		for (int j = 0; j < BOARD_SIZE; ++j)
+		for (int j = 0; j < Board::BOARD_SIZE; ++j)
 		{
-			if (board[i][j] == white)
+			if (g_mainBoard.getPiece(i, j) == Board::white)
 			{
 				ellipse.point = RcToDips(i, j);
 				g_pRenderTarget->FillEllipse(ellipse, g_pBrush);

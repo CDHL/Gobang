@@ -103,7 +103,7 @@ void DipsToRc(D2D1_POINT_2F curPoint, int &x, int &y)
 {
 	x = int((curPoint.x - g_boardLeft) / g_gridGap + 0.5f);
 	y = int((curPoint.y - g_boardTop) / g_gridGap + 0.5f);
-	if (!g_mainBoard.inBoard(x, y))
+	if (!Board::inBoard(x, y))
 	{
 		x = y = -1;
 	}
@@ -136,22 +136,23 @@ void OnLButtonUp(int pixelX, int pixelY, DWORD flags)
 	D2D1_POINT_2F curPoint = DPIScale::PixelsToDips(pixelX, pixelY);
 	int x, y;
 	DipsToRc(curPoint, x, y);
-	if (g_mainBoard.inBoard(x, y) && cmpDis(RcToDips(g_lastPointX, g_lastPointY), curPoint, g_gridGap * CLICK_RANGE))
+	if (Board::inBoard(x, y) && cmpDis(RcToDips(g_lastPointX, g_lastPointY), curPoint, g_gridGap * CLICK_RANGE))
 	{
-		int res = g_mainBoard.setPiece(x, y);
+		Board::Piece res = g_mainBoard.setPiece(x, y);
 
 		InvalidateRect(hwnd, NULL, FALSE);
 
-		if (res == Board::white)
+		if (res == Board::white || res == Board::black)
 		{
-			//OutputDebugString(L"White wins!\n");
-			MessageBox(hwnd, L"White wins!", L"Game over", MB_OK);
+			if (res == Board::white)
+				MessageBox(hwnd, L"White wins!", L"Game over", MB_OK);
+			if (res == Board::black)
+				MessageBox(hwnd, L"Black wins!", L"Game over", MB_OK);
+
+			g_mainBoard.clear();
 		}
-		else if (res == Board::black)
-		{
-			//OutputDebugString(L"Black wins!\n");
-			MessageBox(hwnd, L"Black wins!", L"Game over", MB_OK);
-		}
+
+		InvalidateRect(hwnd, NULL, FALSE);
 	}
 }
 

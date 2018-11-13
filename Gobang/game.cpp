@@ -1,5 +1,7 @@
 #include "game.h"
 
+#include <cstring>
+
 const int path[4][2] = { 1,0, 1,1, 0,1, -1,1 };
 
 //Piece board[BOARD_SIZE][BOARD_SIZE];
@@ -55,4 +57,10 @@ Board::Piece Board::win(const int x, const int y)
 Board::Piece Board::getPiece(int x, int y)
 {
 	return inBoard(x, y) ? m_board[x][y] : error;
+}
+
+void Board::clear()
+{
+	m_curPlayer = black;
+	std::memset(m_board, 0, sizeof m_board);
 }

@@ -13,13 +13,15 @@ public:
 
 	Board(): m_curPlayer(black) { }
 
-	bool inBoard(int x, int y);
+	static bool inBoard(int x, int y);
 
 	Piece setPiece(int x, int y);
 
 	Piece win(int x, int y);
 
 	Piece getPiece(int x, int y);
+
+	void clear();
 
 	static const int BOARD_SIZE = 15;
 

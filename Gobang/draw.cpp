@@ -10,7 +10,7 @@ float DPIScale::scaleY = 1.0f;
 ID2D1Factory			*g_pFactory;
 ID2D1HwndRenderTarget	*g_pRenderTarget;
 ID2D1SolidColorBrush	*g_pBrush;
-ID2D1StrokeStyle		*g_pStrokeStyle;
+//ID2D1StrokeStyle		*g_pStrokeStyle;
 
 const float BORDER_GAP = 0.1f;
 const float CLICK_RANGE = 0.5f;
@@ -71,28 +71,24 @@ HRESULT CreateGraphicsResources()
 		if (SUCCEEDED(hr))
 		{
 			//float dashes[] = { 1.0f, 2.0f, 2.0f, 3.0f, 2.0f, 2.0f };
-			hr = g_pFactory->CreateStrokeStyle(
-				D2D1::StrokeStyleProperties(
-					D2D1_CAP_STYLE_ROUND,
-					D2D1_CAP_STYLE_ROUND,
-					D2D1_CAP_STYLE_ROUND,
-					D2D1_LINE_JOIN_MITER,
-					10.f,
-					D2D1_DASH_STYLE_DASH_DOT_DOT
-				),
-				NULL,
-				0,
-				&g_pStrokeStyle
-			);
+			//hr = g_pFactory->CreateStrokeStyle(
+			//	D2D1::StrokeStyleProperties(
+			//		D2D1_CAP_STYLE_ROUND,
+			//		D2D1_CAP_STYLE_ROUND,
+			//		D2D1_CAP_STYLE_ROUND,
+			//		D2D1_LINE_JOIN_MITER,
+			//		10.f,
+			//	),
+			//	NULL,
+			//	0,
+			//	&g_pStrokeStyle
+			//);
+
+			hr = g_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0, 0, 0), &g_pBrush);
 
 			if (SUCCEEDED(hr))
 			{
-				hr = g_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0, 0, 0), &g_pBrush);
-
-				if (SUCCEEDED(hr))
-				{
-					CalculateLayout();
-				}
+				CalculateLayout();
 			}
 		}
 	}
@@ -113,7 +109,7 @@ void DiscardGraphicsResources()
 {
 	SafeRelease(g_pRenderTarget);
 	SafeRelease(g_pBrush);
-	SafeRelease(g_pStrokeStyle);
+	//SafeRelease(g_pStrokeStyle);
 }
 
 D2D1_POINT_2F RcToDips(int x, int y)
@@ -150,9 +146,9 @@ void OnLButtonUp(int pixelX, int pixelY, DWORD flags)
 				MessageBox(hwnd, L"Black wins!", L"Game over", MB_OK);
 
 			g_mainBoard.clear();
-		}
 
-		InvalidateRect(hwnd, NULL, FALSE);
+			InvalidateRect(hwnd, NULL, FALSE);
+		}
 	}
 }
 

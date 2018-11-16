@@ -4,7 +4,6 @@
 
 const int path[4][2] = { 1,0, 1,1, 0,1, -1,1 };
 
-//Piece board[BOARD_SIZE][BOARD_SIZE];
 Board g_mainBoard;
 
 bool Board::inBoard(int x, int y)

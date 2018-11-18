@@ -6,6 +6,11 @@ const int path[4][2] = { 1,0, 1,1, 0,1, -1,1 };
 
 Board g_mainBoard;
 
+Board::Board() : m_curPlayer(black)
+{
+	std::memset(m_board, 0, sizeof(m_board));
+}
+
 bool Board::inBoard(int x, int y)
 {
 	return x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE;
@@ -61,5 +66,5 @@ Board::Piece Board::getPiece(int x, int y)
 void Board::clear()
 {
 	m_curPlayer = black;
-	std::memset(m_board, 0, sizeof m_board);
+	std::memset(m_board, 0, sizeof(m_board));
 }

@@ -10,6 +10,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLime, int nCmdShow)
 {
 	// Register the window class.
+
 	const wchar_t CLASS_NAME[] = L"Gobang Window Class";
 
 	WNDCLASS wc = { };

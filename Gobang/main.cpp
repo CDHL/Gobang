@@ -1,7 +1,7 @@
-#include "draw.h"
-
 #include <Windows.h>
 #include <windowsx.h>
+
+#include "draw.h"
 
 HWND hwnd;
 

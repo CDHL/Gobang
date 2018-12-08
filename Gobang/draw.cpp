@@ -12,12 +12,18 @@ ID2D1HwndRenderTarget	*g_pRenderTarget;
 ID2D1SolidColorBrush	*g_pBrush;
 //ID2D1StrokeStyle		*g_pStrokeStyle;
 
+// 棋盘距边缘距离/min(窗口长, 窗口宽)
 const float BORDER_GAP = 0.1f;
+// 点击半径/单格边长
 const float CLICK_RANGE = 0.5f;
+// 棋子半径/单格边长
 const float PIECE_SIZE = 0.4f;
 
+// 棋盘边缘坐标（DIP）
 float g_boardLeft, g_boardTop, g_boardRight, g_boardBottom;
+// 单格边长（DIP）
 float g_gridGap;
+// 左键按下时的行列坐标
 int g_lastPointX, g_lastPointY;
 
 extern HWND hwnd;

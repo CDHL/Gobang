@@ -7,7 +7,12 @@ HWND hwnd;
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ PWSTR pCmdLime, _In_ int nCmdShow)
+int WINAPI wWinMain(
+	_In_ HINSTANCE hInstance, 
+	_In_opt_ HINSTANCE hPrevInstance, 
+	_In_ PWSTR pCmdLime, 
+	_In_ int nCmdShow
+)
 {
 	// Register the window class.
 

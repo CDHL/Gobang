@@ -78,7 +78,9 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Manifest>
-      <AdditionalManifestFiles>manifest.xml</AdditionalManifestFiles>
+      <AdditionalManifestFiles>
+      </AdditionalManifestFiles>
+      <EnableDpiAwareness>true</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

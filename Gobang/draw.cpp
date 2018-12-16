@@ -1,8 +1,11 @@
+#include "stdafx.h"
+
 #include "draw.h"
-#include "game.h"
 
 #include <d2d1.h>
 #pragma comment(lib, "d2d1")
+
+#include "game.h"
 
 float DPIScale::scaleX = 1.0f;
 float DPIScale::scaleY = 1.0f;
@@ -147,9 +150,9 @@ void OnLButtonUp(int pixelX, int pixelY, DWORD flags)
 		if (res == Board::white || res == Board::black)
 		{
 			if (res == Board::white)
-				MessageBox(hwnd, L"White wins!", L"Game over", MB_OK);
+				MessageBox(hwnd, _T("White wins!"), _T("Game over"), MB_OK);
 			if (res == Board::black)
-				MessageBox(hwnd, L"Black wins!", L"Game over", MB_OK);
+				MessageBox(hwnd, _T("Black wins!"), _T("Game over"), MB_OK);
 
 			g_mainBoard.clear();
 

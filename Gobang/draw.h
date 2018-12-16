@@ -1,6 +1,5 @@
 #pragma once
 
-#include <Windows.h>
 #include <d2d1.h>
 
 extern ID2D1Factory				*g_pFactory;

@@ -1,11 +1,17 @@
+#include "stdafx.h"
+
 #include "game.h"
 
 #include <cstring>
 
 const int path[4][2] = { 1,0, 1,1, 0,1, -1,1 };
 
-//Piece board[BOARD_SIZE][BOARD_SIZE];
 Board g_mainBoard;
+
+Board::Board() : m_curPlayer(black)
+{
+	std::memset(m_board, 0, sizeof(m_board));
+}
 
 bool Board::inBoard(int x, int y)
 {
@@ -62,5 +68,5 @@ Board::Piece Board::getPiece(int x, int y)
 void Board::clear()
 {
 	m_curPlayer = black;
-	std::memset(m_board, 0, sizeof m_board);
+	std::memset(m_board, 0, sizeof(m_board));
 }

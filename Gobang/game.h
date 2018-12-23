@@ -11,7 +11,7 @@ public:
 		white = 2
 	};
 
-	Board(): m_curPlayer(black) { }
+	Board();
 
 	static bool inBoard(int x, int y);
 

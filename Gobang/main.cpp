@@ -1,16 +1,23 @@
-#include "draw.h"
+#include "stdafx.h"
 
-#include <Windows.h>
 #include <windowsx.h>
+
+#include "draw.h"
 
 HWND hwnd;
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLime, int nCmdShow)
+int WINAPI _tWinMain(
+	_In_ HINSTANCE hInstance, 
+	_In_opt_ HINSTANCE hPrevInstance, 
+	_In_ PTSTR pCmdLine, 
+	_In_ int nCmdShow
+)
 {
 	// Register the window class.
-	const wchar_t CLASS_NAME[] = L"Gobang Window Class";
+
+	const TCHAR CLASS_NAME[] = _T("Gobang Window Class");
 
 	WNDCLASS wc = { };
 
@@ -26,7 +33,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLime
 	hwnd = CreateWindowEx(
 		0,						// Optional window styles
 		CLASS_NAME,				// Window class
-		L"Gobang",			// Window text
+		_T("Gobang"),			// Window text
 		WS_OVERLAPPEDWINDOW,	// Window style
 
 		// Size and position

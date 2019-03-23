@@ -1,8 +1,10 @@
 #pragma once
 
+// 棋盘类，一个实例表示一个棋盘
 class Board
 {
 public:
+	// 棋子类型，会作为函数的返回值
 	enum Piece
 	{
 		error = -1,

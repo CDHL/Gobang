@@ -69,10 +69,12 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	switch (uMsg)
 	{
 	case WM_CREATE:
+		// 创建D2D工厂
 		if (FAILED(D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &g_pFactory)))
 		{
 			return -1;
 		}
+		// 初始化DPI
 		DPIScale::Initialize(g_pFactory);
 		return 0;
 
@@ -84,8 +86,11 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	//	return 0;
 
 	case WM_DESTROY:
+		// 释放资源
 		DiscardGraphicsResources();
+		// 释放D2D工厂
 		SafeRelease(g_pFactory);
+		// 退出程序
 		PostQuitMessage(0);
 		return 0;
 

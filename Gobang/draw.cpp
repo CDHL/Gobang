@@ -17,7 +17,7 @@ ID2D1SolidColorBrush	*g_pBrush;
 
 // 棋盘距边缘距离/min(窗口长, 窗口宽)
 const float BORDER_GAP = 0.1f;
-// 点击半径/单格边长
+// 点击判定半径/单格边长（稍大于棋子半径）
 const float CLICK_RANGE = 0.5f;
 // 棋子半径/单格边长
 const float PIECE_SIZE = 0.4f;
@@ -69,9 +69,10 @@ HRESULT CreateGraphicsResources()
 			D2D1::RenderTargetProperties(),
 			D2D1::HwndRenderTargetProperties(
 				hwnd,
+				// rc.left, rc.top 都等于0
 				D2D1::SizeU(
-					rc.right - rc.left,
-					rc.bottom - rc.top
+					rc.right,
+					rc.bottom
 				)
 			),
 			&g_pRenderTarget
@@ -104,14 +105,11 @@ HRESULT CreateGraphicsResources()
 	return hr;
 }
 
+// 将DIPs转为行列坐标
 void DipsToRc(D2D1_POINT_2F curPoint, int &x, int &y)
 {
 	x = int((curPoint.x - g_boardLeft) / g_gridGap + 0.5f);
 	y = int((curPoint.y - g_boardTop) / g_gridGap + 0.5f);
-	if (!Board::inBoard(x, y))
-	{
-		x = y = -1;
-	}
 }
 
 void DiscardGraphicsResources()
@@ -141,7 +139,7 @@ void OnLButtonUp(int pixelX, int pixelY, DWORD flags)
 	D2D1_POINT_2F curPoint = DPIScale::PixelsToDips(pixelX, pixelY);
 	int x, y;
 	DipsToRc(curPoint, x, y);
-	if (Board::inBoard(x, y) && cmpDis(RcToDips(g_lastPointX, g_lastPointY), curPoint, g_gridGap * CLICK_RANGE))
+	if (cmpDis(RcToDips(g_lastPointX, g_lastPointY), curPoint, g_gridGap * CLICK_RANGE))
 	{
 		Board::Piece res = g_mainBoard.setPiece(x, y);
 

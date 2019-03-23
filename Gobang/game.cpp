@@ -20,8 +20,7 @@ bool Board::inBoard(int x, int y)
 
 Board::Piece Board::setPiece(int x, int y)
 {
-	if (!inBoard(x, y)) return error;
-	if (m_board[x][y]) return error;
+	if (!inBoard(x, y) || m_board[x][y]) return error;
 	if (m_curPlayer == black)
 	{
 		m_board[x][y] = black;
